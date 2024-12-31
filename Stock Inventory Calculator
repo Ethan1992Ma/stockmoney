@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Inventory Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #inventoryResult, #profitResult {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Inventory Calculator</h1>
+
+        <h2>1. Calculate Average Cost After Purchase</h2>
+        <label for="currentShares">Current Number of Shares:</label>
+        <input type="number" id="currentShares" placeholder="e.g., 100">
+
+        <label for="currentPrice">Current Average Price (per share in USD):</label>
+        <input type="number" id="currentPrice" placeholder="e.g., 50">
+
+        <label for="newShares">Number of New Shares to Buy:</label>
+        <input type="number" id="newShares" placeholder="e.g., 50">
+
+        <label for="newPrice">Price for New Shares (per share in USD):</label>
+        <input type="number" id="newPrice" placeholder="e.g., 55">
+
+        <button onclick="calculateAverageCost()">Calculate Average Cost</button>
+        <div id="inventoryResult"></div>
+
+        <h2>2. Calculate Profit or Loss at Target Price</h2>
+        <label for="targetPrice">Target Selling Price (per share in USD):</label>
+        <input type="number" id="targetPrice" placeholder="e.g., 60">
+
+        <button onclick="calculateProfit()">Calculate Profit/Loss</button>
+        <div id="profitResult"></div>
+    </div>
+
+    <script>
+        function calculateAverageCost() {
+            const currentShares = parseFloat(document.getElementById('currentShares').value);
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+            const newShares = parseFloat(document.getElementById('newShares').value);
+            const newPrice = parseFloat(document.getElementById('newPrice').value);
+
+            if (isNaN(currentShares) || isNaN(currentPrice) || isNaN(newShares) || isNaN(newPrice)) {
+                document.getElementById('inventoryResult').innerText = "Please enter valid values for all fields.";
+                return;
+            }
+
+            const totalCost = (currentShares * currentPrice) + (newShares * newPrice);
+            const totalShares = currentShares + newShares;
+            const averageCost = totalCost / totalShares;
+
+            document.getElementById('inventoryResult').innerText = `
+                New Average Cost: $${averageCost.toFixed(2)} per share (Total Shares: ${totalShares}).
+            `;
+        }
+
+        function calculateProfit() {
+            const currentShares = parseFloat(document.getElementById('currentShares').value);
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+            const newShares = parseFloat(document.getElementById('newShares').value);
+            const newPrice = parseFloat(document.getElementById('newPrice').value);
+            const targetPrice = parseFloat(document.getElementById('targetPrice').value);
+
+            if (isNaN(currentShares) || isNaN(currentPrice) || isNaN(newShares) || isNaN(newPrice) || isNaN(targetPrice)) {
+                document.getElementById('profitResult').innerText = "Please enter valid values for all fields.";
+                return;
+            }
+
+            const totalCost = (currentShares * currentPrice) + (newShares * newPrice);
+            const totalShares = currentShares + newShares;
+            const totalRevenue = totalShares * targetPrice;
+            const profitOrLoss = totalRevenue - totalCost;
+
+            document.getElementById('profitResult').innerText = `
+                At a target price of $${targetPrice.toFixed(2)},
+                your total profit/loss would be $${profitOrLoss.toFixed(2)}.
+            `;
+        }
+    </script>
+</body>
+</html>
